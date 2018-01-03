@@ -1,0 +1,146 @@
+<html lang="zh-hans">
+<head>
+<meta charset="UTF-8">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>尚德-技术人员大抽奖</title>
+<style type="text/css" media="screen">
+	body, html{
+		padding: 20px;
+	}
+	h2{
+		text-align: center;
+		font-weight: normal;
+		font-size: 14px;
+		color: #d46b08;
+		line-height: 20px;
+	}
+	h2 p{
+		padding: 0;
+		margin: 0;
+	}
+	section{
+		font-size: 14px;
+	}
+	.mt-15{
+		margin-top: 15px;
+	}
+	.mr-15{
+		margin-right: 15px;
+	}
+	input{
+		padding: 0 10px;
+		line-height: 26px;
+	}
+	button{
+		line-height: 26px;
+	}
+	.fuzhu{
+		color: gray; 
+		font-size: 12px;
+	}
+	.fuzhu p{
+		padding-left: 15px;
+	}
+</style>
+</head>
+<body>
+<h2>
+	<p style="font-size: 17px">郑重说明：</p>
+	<br>
+	<p>
+		为了避免出现多人争抢分享机会
+	</p>
+	<p>
+		而出现的打架流血事件的再次发生，
+	</p>
+	<p>
+		特此简单搞了一个抽签系统。
+	</p>
+	<br>
+	<p>
+		使用非常简单：
+	</p>
+	<p>
+		1，输入参与分享的人员，
+	</p>
+	<p>
+		2，选择想抽出的人数，
+	</p>
+	<p>
+		3，点击抽签按钮，
+	</p>
+	<p>
+		4，随着轰隆隆一声巨响，程序就启动了!
+	</p>
+</h2>
+<p style="color: #ccc;">-------------------------------------------------------</p>
+<section>
+	<div class="mt-15">
+		参与分享的人员名单：<input type="input" placeholder="人员之间用逗号分割" id="input" />
+	</div>
+	<div class="mt-15">
+		打算抽出几个人：<input type="number" min="1" value="1" id="number" style="width: 60px">
+	</div>
+	<div class="mt-15" style="color: #13c2c2">
+		<button class="mt-15 mr-15" type="button" id="button">开始抽签 -_- </button> 幸运的人儿是：<span id="result"></span>
+	</div>
+</section>
+<p style="color: #ccc;">-------------------------------------------------------</p>
+<div class="fuzhu" class="mt-15">
+	- 附注：
+	<p>1，坚决不能使用IE，谷歌/火狐都能搞！</p>
+	<p>2，为方便填写人员，我按照微信技术大群成员写了个预备名单，如有遗漏或者名字错误者，那是你们不够幸运，跟我无关，嘻嘻</p>
+	- 预备名单：
+	<p>后端预备名单：柴传诗,程亚平,牛小龙,李率,郭洋,艾佳,于长城,席跃飞,鲁光光,刘德,张小斌,李江岩,赵龙,孟镶超,于光明,刘岩,江坤辰</p>
+	<p>后端预备名单：王海荣,张芳芳,陈思,郭君,秦璞,赵红,刘春旭,潘文,胡海波,刘德龙,杨洪超,王永昌</p>
+</div>
+
+<script>
+/**
+ * @param list   人员集合
+ * @param number 需要筛选出的人数
+ * create by whr
+ */
+class Todo{
+	constructor(list, number = 1){
+		if(!Array.isArray(list))return;
+		if(typeof number !== 'number')return;
+		Object.assign(this, {
+			list,
+			number,
+			result: [],
+		})
+		return this.filter();
+	}
+	filter(){
+		let list = this.list;
+		const name = list[Math.floor(Math.random()*list.length)];
+		if(this.result.includes(name))return this.filter();
+		this.result.push(name);
+		if(this.result.length >= this.number){
+			return this.result;
+		}
+		return this.filter();
+	}
+}
+
+document.getElementById('button').onclick = () => {
+	let v = document.getElementById('input').value;
+	if(!v || !v.trim()){
+		document.getElementById('result').innerHTML = '先输点东西成不！';
+		return;
+	}
+	let result = new Todo(v.split(',').filter(item => item.trim() && item.trim()), Number(document.getElementById('number').value));
+	let hehe = [result.join(','), '马上就好', '休息一下', 7, 8, 9, 10, '开始倒计时'];
+	let i = hehe.length;
+	const timer = setInterval(() => {
+		if(i){
+			document.getElementById('result').innerHTML = hehe[--i];
+		}else{
+			clearInterval(timer)
+		}
+	}, 1000)
+}
+</script>
+</body>
+</html>
